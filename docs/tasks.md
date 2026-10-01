@@ -1,0 +1,5 @@
+ - [ ] criar o componente compartilhado do header
+ - [ ] criar a pagina de visualização de uma postagem
+  - [ ] criar campo dinamico de titulo
+  - [ ] criar campo dinamico de data
+  - [ ] descobrir como ler de arquivos markdown
