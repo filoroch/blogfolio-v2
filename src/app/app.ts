@@ -1,6 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { GlobalHeaderComponent } from './shared/components/header';
+import { GlobalHeaderComponent } from './shared/components/header.component';
 
 @Component({
   imports: [RouterOutlet, GlobalHeaderComponent],
@@ -8,6 +8,4 @@ import { GlobalHeaderComponent } from './shared/components/header';
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
-export class App {
-  protected readonly title = signal('blogfolio');
-}
+export class App {}
