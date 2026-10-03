@@ -38,6 +38,7 @@
     "@angular/compiler-cli": "^22.2.0",
     "@nx/devkit": "^23.2.1",
     "@tailwindcss/postcss": "^4.1.12",
+    "@tailwindcss/typography": "^0.5.20",
     "jsdom": "^30.0.0",
     "postcss": "^8.5.3",
     "prettier": "^3.8.1",

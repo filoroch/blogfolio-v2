@@ -20,7 +20,10 @@ export default defineConfig(({ mode }) => {
         ssr: false,
         static: true,
         prerender: {
-          routes: [],
+          routes: [
+            // Rotas dinâmicas de conteúdo não são descobertas sozinhas com static:true
+            '/blog/construindo-meu-primeiro-blog',
+          ],
         },
       }),
       viteTsConfigPaths(),

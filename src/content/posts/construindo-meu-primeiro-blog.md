@@ -8,6 +8,15 @@ categories: [tecnology, architecture, blog]
 
 Construir esse blog era um objetivo de longa data. Quando comecei a estudar Angular como parte do meu novo trabalho, pensei em varios projetos para consolidar meus conhecimentos na Stack e acabei finalmente começando pelo mais simples e oque tem mais relevancia pra mim: um blogfolio
 
+```javascript
+@Component({
+  template: ``
+})
+export default class ExampleComponent {
+
+}
+```
+
 ## A ideia
 O blogfolio é basicamente um portfolio + blog que contem tanto minhas experiencias, projetos e conteudos compartilhados, criando o meu pequeno espaço na web. A sacada aqui era lidar com uma dor antiga que era centralizar minhas ideias e meu espaço de discursão em um lugar publico e que acima de tudo, pudesse ser facilmente compartilhado, como referencia para meus amigos, como forma de ser criticado por erros tambem.
 
