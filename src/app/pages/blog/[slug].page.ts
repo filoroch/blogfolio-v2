@@ -1,54 +1,80 @@
-import { Component, effect, inject } from '@angular/core'; // Adicionado o inject
-import { Title } from '@angular/platform-browser'; // 1. Importação do Title
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { Component, computed, effect, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { injectContent, MarkdownComponent } from '@analogjs/content';
-import { toSignal } from '@angular/core/rxjs-interop'; // 2. Importação oficial do toSignal
+import { toSignal } from '@angular/core/rxjs-interop';
 import { PostAttributes } from '../../core/blog/post-attributes.model';
 
+const SITE_TITLE = 'Meu Blog';
+
 @Component({
-  imports: [AsyncPipe, DatePipe, MarkdownComponent],
+  imports: [DatePipe, RouterLink, MarkdownComponent],
   template: `
-    @if (post$ | async; as post) {
-      <section class="p-16">
-        @if (post.attributes.title) {
-          <header class="mb-10 border-bp">
-            <time>{{ post.attributes.publishedAt | date: 'dd/MM/yyyy' }}</time>
-            <h1 class="text-4xl font-bold">{{ post.attributes.title }}</h1>
-            <p class="mt-2 mr-86 text-lg text-justify opacity-80">{{ post.attributes.description }}</p>
-            <ul class="mt-2 flex gap-2">
+    @if (resolvedPost(); as post) {
+      <section class="mx-auto w-full max-w-3xl px-4 py-10 md:px-8">
+        <header class="mb-10 border-b pb-8">
+          <time
+            class="text-sm text-gray-600"
+            [attr.datetime]="post.attributes.publishedAt"
+          >
+            {{ post.attributes.publishedAt | date: 'dd/MM/yyyy' : 'UTC' }}
+          </time>
+          <h1 class="mt-2 text-4xl font-bold">{{ post.attributes.title }}</h1>
+          <p class="mt-2 text-lg text-gray-700">
+            {{ post.attributes.description }}
+          </p>
+          @if (post.attributes.categories.length > 0) {
+            <ul aria-label="Categorias" class="mt-4 flex flex-wrap gap-2">
               @for (category of post.attributes.categories; track category) {
                 <li class="rounded border px-2 py-1 text-sm">{{ category }}</li>
               }
             </ul>
-          </header>
-        } @else {
-          <p>Post não encontrado para este slug.</p>
-        }
-        
-        <article class="prose">
+          }
+        </header>
+
+        <article class="prose max-w-none">
           <analog-markdown [content]="post.content"></analog-markdown>
         </article>
+      </section>
+    } @else {
+      <section class="mx-auto w-full max-w-3xl px-4 py-10 md:px-8">
+        <h1 class="text-2xl font-bold">Post não encontrado</h1>
+        <p class="mt-2 text-gray-700">
+          Não existe conteúdo para este endereço. Volte para a
+          <a class="underline" routerLink="/blog">listagem do blog</a>.
+        </p>
       </section>
     }
   `,
 })
 export default class BlogPostComponent {
-  // 3. Injetar o Title service
-  private titleService = inject(Title);
+  private readonly title = inject(Title);
 
-  post$ = injectContent<PostAttributes>({ param: 'slug', subdirectory: 'posts' });
+  /**
+   * `injectContent` never emits `undefined`: for an unknown slug it resolves to
+   * a truthy placeholder with empty `attributes`. Guarding on the presence of
+   * `title` is therefore what actually distinguishes a real post, and keeps the
+   * not-found branch reachable.
+   */
+  readonly post = toSignal(
+    injectContent<PostAttributes>({ param: 'slug', subdirectory: 'posts' }),
+  );
 
-  // 4. Usar o toSignal importado
-  postSignal = toSignal(this.post$);
+  /** `undefined` means "no post for this slug". */
+  readonly resolvedPost = computed(() => {
+    const content = this.post();
+
+    return content?.attributes?.title ? content : undefined;
+  });
 
   constructor() {
     effect(() => {
-      // 5. Ler o valor do Signal invocando a função ()
-      const post = this.postSignal(); 
+      // Reset first: without this the previous post's title sticks to every
+      // later navigation in the same SPA session.
+      const title = this.resolvedPost()?.attributes.title;
 
-      if (post?.attributes?.title) {
-        this.titleService.setTitle(`${post.attributes.title} | Meu Blog`);
-      }
+      this.title.setTitle(title ? `${title} | ${SITE_TITLE}` : SITE_TITLE);
     });
   }
 }

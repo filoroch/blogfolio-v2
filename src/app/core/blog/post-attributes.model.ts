@@ -1,17 +1,19 @@
-// 1. Adicione "as const" para fixar os valores literais das strings
 export const categories = [
-  'tecnology',
+  'technology',
   'architecture',
   'blog',
-  'infrastructure'
+  'infrastructure',
 ] as const;
 
-export type Category = typeof categories[number];
+export type Category = (typeof categories)[number];
+
+export function isCategory(value: unknown): value is Category {
+  return categories.some((category) => category === value);
+}
 
 export interface PostAttributes {
-    title: string;
-    slug: string;
-    description: string;
-    publishedAt: string;
-    categories: Category[];
+  title: string;
+  description: string;
+  publishedAt: string;
+  categories: Category[];
 }

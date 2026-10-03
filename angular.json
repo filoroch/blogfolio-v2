@@ -50,7 +50,10 @@
           }
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@analogjs/vitest-angular:test",
+          "options": {
+            "configFile": "vite.config.ts"
+          }
         }
       }
     }

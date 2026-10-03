@@ -1,9 +1,8 @@
 ---
 title: Construindo meu primeiro blog
-slug: construindo-meu-primeiro-blog
 description: como eu desenhei a arquitetura do meu blog para me dar a liberdade de escrever no notion e publicar estaticamente e com a estilização que eu queria no angular
-publishedAt: 2026-10-03
-categories: [tecnology, architecture, blog]
+publishedAt: '2026-10-03'
+categories: [technology, architecture, blog]
 ---
 
 Construir esse blog era um objetivo de longa data. Quando comecei a estudar Angular como parte do meu novo trabalho, pensei em varios projetos para consolidar meus conhecimentos na Stack e acabei finalmente começando pelo mais simples e oque tem mais relevancia pra mim: um blogfolio
