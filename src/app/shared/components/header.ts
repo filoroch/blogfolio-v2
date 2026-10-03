@@ -20,7 +20,7 @@ export interface link { redirect: string, texto: string}
 })
 export class GlobalHeaderComponent {
 
-  private links: link[] = [
+  public links: link[] = [
     { redirect: '', texto: 'portfolio' },
     { redirect: '', texto: 'blog' },
   ]

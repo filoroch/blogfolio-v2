@@ -1,10 +1,13 @@
+import { provideContent, withMarkdownRenderer } from '@analogjs/content';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { routes } from './app.routes';
+import { provideFileRouter } from '@analogjs/router';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
+    provideFileRouter(), // ativa o roteamento de paginas com base em hierarquia de arquivos
+    provideHttpClient(),
+    provideContent(withMarkdownRenderer()) // permite prover conteudo em markdown na pagina usando file based routes
   ]
 };
